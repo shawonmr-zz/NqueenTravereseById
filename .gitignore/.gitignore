@@ -1,0 +1,367 @@
+// Knigths_Tour.cpp : Defines the entry point for the console application.
+//Mahbubur Rahman
+
+#include "stdafx.h"
+#include "stdio.h"
+#include <iostream>
+#include <list>
+#include <string>
+#include <queue>
+
+using namespace std;
+
+#define BOARD_SIZE 8
+
+
+//////////////////////////////////////////////////////////
+//This program prints out knights tour. Each move of the knight
+//from the initial position has been initiated with id. Next, each
+//id is advanced following knight's travel rule. Finally, the ids
+//that reach to the final destination has been printed out.
+//Input: Define the size of the board by setting BOARD_SIZE
+//Next define start position and end position of the knight 
+//from lines 71 to 75.
+
+//////////////////////////Global variable////////////////////
+char BOARD[BOARD_SIZE][BOARD_SIZE];
+queue<int> board_index_list;
+list<char> board_id_list;
+/////////////////////////////////////////////////////////////
+
+////////////////////////Function Declaration////////////////
+void initialization(char BOARD[BOARD_SIZE][BOARD_SIZE]);
+void knight_travel (char BOARD[BOARD_SIZE][BOARD_SIZE]);
+void print_board(char BOARD[BOARD_SIZE][BOARD_SIZE]);
+////////////////////////////////////////////////////////////
+
+int main()
+{
+	int i;
+	initialization(BOARD);
+	cout<<"Initial Board"<<endl<<endl;
+    print_board(BOARD);
+	knight_travel(BOARD);
+	cout<<"Final Board"<<endl<<endl;
+    print_board(BOARD);
+
+	list<char>::iterator it;
+	cout<<"Ids that reach to the end"<<endl;
+	for(it = board_id_list.begin(); it != board_id_list.end(); it++)
+	{
+		cout<<(*it)<<endl;
+	}
+
+	getchar();
+	return 0;
+}
+
+void initialization(char BOARD[BOARD_SIZE][BOARD_SIZE])
+{
+	int i, j, start_x, start_y, end_x, end_y, temp_x, temp_y;
+	char knight_id = '1';
+	for(i = 0; i < BOARD_SIZE; i++)
+	{
+		for(j = 0; j <BOARD_SIZE; j++)
+		{
+			BOARD[i][j] = '0';
+		}
+
+	}
+	
+	start_x = BOARD_SIZE/2;
+	start_y = BOARD_SIZE/2;
+
+	end_x = BOARD_SIZE-1;
+	end_y = BOARD_SIZE-1;
+
+	BOARD[start_x][start_y]='S';
+	BOARD[end_x][end_y]='E';
+
+	//Clockwise motion
+
+	//1st motion
+	temp_x = start_x-2;
+	temp_y = start_y-1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+		knight_id++;
+	}
+   
+	//2nd motion
+	temp_x = start_x-1;
+	temp_y = start_y-2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		knight_id++;
+	}
+	//3rd motion
+	temp_x = start_x+1;
+	temp_y = start_y-2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		knight_id++;
+	}
+	//4th motion
+	temp_x = start_x+2;
+	temp_y = start_y-1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		knight_id++;
+	}
+	//5th motion
+	temp_x = start_x+2;
+	temp_y = start_y+1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		knight_id++;
+	}
+	//6th motion
+	temp_x = start_x+1;
+	temp_y = start_y+2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		knight_id++;
+	}
+	//7th motion
+	temp_x = start_x-1;
+	temp_y = start_y+2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		knight_id++;
+	}
+	//8th motion
+	temp_x = start_x-2;
+	temp_y = start_y+1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1)
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		knight_id++;
+	}
+
+
+
+
+}
+
+void knight_travel (char BOARD[BOARD_SIZE][BOARD_SIZE])
+{
+	int i, start_x, start_y, end_x, end_y, temp_x, temp_y;
+	char knight_id;
+	while(board_index_list.size() > 0)
+	{
+		start_x = board_index_list.front();
+		board_index_list.pop();
+		start_y = board_index_list.front();
+		board_index_list.pop();
+
+		knight_id = BOARD[start_x][start_y];
+
+		//1st motion
+	temp_x = start_x-2;
+	temp_y = start_y-1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+				
+	}
+   
+	//2nd motion
+	temp_x = start_x-1;
+	temp_y = start_y-2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+	}
+	//3rd motion
+	temp_x = start_x+1;
+	temp_y = start_y-2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+	}
+	//4th motion
+	temp_x = start_x+2;
+	temp_y = start_y-1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+	}
+	//5th motion
+	temp_x = start_x+2;
+	temp_y = start_y+1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+	}
+	//6th motion
+	temp_x = start_x+1;
+	temp_y = start_y+2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+	}
+	//7th motion
+	temp_x = start_x-1;
+	temp_y = start_y+2;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+	}
+	//8th motion
+	temp_x = start_x-2;
+	temp_y = start_y+1;
+	if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='E')
+	{
+		board_id_list.push_back(knight_id);
+		//continue;
+	}
+	else if(temp_x >=0 && temp_x <= BOARD_SIZE-1 &&
+		temp_y >= 0 && temp_y <= BOARD_SIZE-1 && BOARD[temp_x][temp_y]=='0')
+	{
+		board_index_list.push(temp_x);
+		board_index_list.push(temp_y);
+
+		BOARD[temp_x][temp_y]=knight_id;
+		
+	}
+
+
+
+	}
+
+
+}
+
+
+void print_board(char BOARD[BOARD_SIZE][BOARD_SIZE])
+{
+	int i, j;
+	
+	for(i = 0; i < BOARD_SIZE; i++)
+	{
+		for(j = 0; j < BOARD_SIZE; j++)
+		{
+			cout<<BOARD[i][j]<<" ";
+		}
+		cout<<endl;
+
+	}
+
+}
